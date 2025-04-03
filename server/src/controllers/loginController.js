@@ -17,9 +17,9 @@ module.exports.login = (req, res) => {
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (passwordMatch) {
-            // Incluye el rol en el token JWT
+            // Incluye el id y el rol en el token JWT
             const token = jwt.sign(
-                { username: user.username, role: user.role },
+                { id: user.id, username: user.username, role: user.role },
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
             );

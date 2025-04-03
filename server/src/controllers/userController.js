@@ -2,7 +2,7 @@
 const db = require('../config/db');
 
 const getUsers = (req, res) => {
-    const query = 'SELECT id, document, name, email, username, creationDate, role FROM users';
+    const query = 'SELECT id, phone, name, email, username, creationDate, role FROM users';
     db.query(query, (err, results) => {
         if (err) {
             console.error("Error fetching users:", err);
@@ -13,15 +13,15 @@ const getUsers = (req, res) => {
 };
 
 const createUser = (req, res) => {
-    const { document, name, email, username, password, role } = req.body;
+    const { phone, name, email, username, password, role } = req.body;
     const query = `
-        INSERT INTO users (document, name, email, username, password, role)
+        INSERT INTO users (phone, name, email, username, password, role)
         VALUES (?, ?, ?, ?, ?, ?)
     `;
     // **Importante: Debes hashear la contraseña antes de guardarla en la base de datos.**
     db.query(
         query,
-        [document, name, email, username, password, role], // Reemplaza 'password' con la contraseña hasheada
+        [phone, name, email, username, password, role], // Reemplaza 'password' con la contraseña hasheada
         (err, result) => {
             if (err) {
                 console.error("Error creating user:", err);
@@ -34,22 +34,22 @@ const createUser = (req, res) => {
 
 const updateUser = (req, res) => {
     const { userId } = req.params;
-    const { document, name, email, username, password, role } = req.body;
+    const { phone, name, email, username, password, role } = req.body;
     let query = `
         UPDATE users SET
-            document = ?,
+            phone = ?,
             name = ?,
             email = ?,
             username = ?,
             role = ?
         WHERE id = ?
     `;
-    const params = [document, name, email, username, role, userId];
+    const params = [phone, name, email, username, role, userId];
 
     if (password) {
         query = `
             UPDATE users SET
-                document = ?,
+                phone = ?,
                 name = ?,
                 email = ?,
                 username = ?,

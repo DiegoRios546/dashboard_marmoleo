@@ -9,17 +9,17 @@ module.exports.register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Consulta para insertar un nuevo usuario con el rol, incluyendo el teléfono
-        const insertUserQuery = `INSERT INTO users (phone, name, email, username, password,  role) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        const insertUserQuery = `INSERT INTO users (phone, name, email, username, password, role) VALUES (?, ?, ?, ?, ?, ?)`;
 
         connection.query(
             insertUserQuery,
-            [document, name, email, username, hashedPassword, phone, role],
+            [phone, name, email, username, hashedPassword, role],
             (err, userResult) => {
                 if (err) {
                     if (err.code === "ER_DUP_ENTRY") {
                         return res
                             .status(400)
-                            .send({ message: "El usuario o documento ya existe" });
+                            .send({ message: "El usuario o telefono ya existe" });
                     }
                     return res.status(500).send(err);
                 }
